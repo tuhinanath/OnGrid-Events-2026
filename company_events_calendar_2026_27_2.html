@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Company Events Calendar 2026–27</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --navy:#0F1B2D;
+    --navy-mid:#162033;
+    --navy-light:#1E2E45;
+    --accent:#4A9EFF;
+    --accent-warm:#F5A623;
+    --text:#E8EEF6;
+    --text-dim:#7A90A8;
+    --text-muted:#4A5E72;
+    --border:#1E3050;
+    --card:#162238;
+
+    --c-exhibition:#7B6FE8;
+    --c-exhibition-bg:rgba(123,111,232,0.15);
+    --c-webinar:#34C48A;
+    --c-webinar-bg:rgba(52,196,138,0.13);
+    --c-roundtable:#F5A623;
+    --c-roundtable-bg:rgba(245,166,35,0.13);
+    --c-conference:#F0614A;
+    --c-conference-bg:rgba(240,97,74,0.13);
+    --c-podcast:#4A9EFF;
+    --c-podcast-bg:rgba(74,158,255,0.13);
+    --c-experiential:#A8D84A;
+    --c-experiential-bg:rgba(168,216,74,0.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh}
+
+  /* HEADER */
+  .header{padding:48px 48px 32px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .header::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(74,158,255,0.08) 0%,transparent 70%);pointer-events:none}
+  .header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:28px}
+  .header-eyebrow{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .header-title{font-family:'DM Serif Display',serif;font-size:36px;color:var(--text);line-height:1.1;margin-bottom:6px}
+  .header-title em{font-style:italic;color:var(--accent)}
+  .header-sub{font-size:14px;color:var(--text-dim);font-weight:300}
+  .summary-row{display:flex;gap:12px;flex-wrap:wrap}
+  .s-chip{background:var(--navy-light);border:1px solid var(--border);border-radius:10px;padding:12px 20px;min-width:110px}
+  .s-chip .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:4px}
+  .s-chip .val{font-size:22px;font-weight:600;color:var(--text)}
+  .s-chip .val.accent{color:var(--accent-warm)}
+
+  /* SOURCE TOGGLE */
+  .controls{padding:20px 48px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+  .source-tabs{display:flex;gap:4px;background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:3px}
+  .source-tab{font-size:12px;font-weight:500;padding:5px 14px;border-radius:6px;cursor:pointer;color:var(--text-dim);border:none;background:transparent;transition:all .15s}
+  .source-tab.active{background:var(--accent);color:#fff}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .filter-lbl{font-size:11px;color:var(--text-muted);margin-right:2px}
+  .fpill{font-size:11px;padding:4px 11px;border-radius:20px;cursor:pointer;border:1px solid transparent;font-weight:500;transition:opacity .15s;display:inline-flex;align-items:center;gap:4px}
+  .fpill.inactive{opacity:.3}
+  .fpill.exhibition{background:var(--c-exhibition-bg);color:var(--c-exhibition);border-color:rgba(123,111,232,.3)}
+  .fpill.webinar{background:var(--c-webinar-bg);color:var(--c-webinar);border-color:rgba(52,196,138,.3)}
+  .fpill.roundtable{background:var(--c-roundtable-bg);color:var(--c-roundtable);border-color:rgba(245,166,35,.3)}
+  .fpill.conference{background:var(--c-conference-bg);color:var(--c-conference);border-color:rgba(240,97,74,.3)}
+  .fpill.podcast{background:var(--c-podcast-bg);color:var(--c-podcast);border-color:rgba(74,158,255,.3)}
+  .fpill.experiential{background:var(--c-experiential-bg);color:var(--c-experiential);border-color:rgba(168,216,74,.3)}
+
+  /* CALENDAR */
+  .cal-section{padding:28px 48px 48px}
+  .cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .cal-nav h2{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);flex:1}
+  .nav-btn{background:var(--navy-light);border:1px solid var(--border);border-radius:7px;padding:6px 11px;cursor:pointer;color:var(--text-dim);font-size:14px;transition:all .15s}
+  .nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .today-btn{font-size:11px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-weight:500}
+  .grid-head{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
+  .grid-head span{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);text-align:center;padding:5px 0}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .cell{background:var(--card);border-radius:6px;min-height:90px;padding:6px;display:flex;flex-direction:column;gap:3px;border:1px solid transparent;transition:border-color .15s}
+  .cell:hover{border-color:var(--border)}
+  .cell.other-month{background:rgba(22,34,56,0.4)}
+  .cell.other-month .day-num{color:var(--text-muted)}
+  .cell.today{border-color:var(--accent)!important}
+  .cell.today .day-num{background:var(--accent);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+  .day-num{font-size:12px;color:var(--text-dim);font-weight:500;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .evt{font-size:10px;padding:2px 6px;border-radius:4px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;line-height:1.45;transition:opacity .1s}
+  .evt:hover{opacity:.8}
+  .evt.exhibition{background:var(--c-exhibition-bg);color:var(--c-exhibition)}
+  .evt.webinar{background:var(--c-webinar-bg);color:var(--c-webinar)}
+  .evt.roundtable{background:var(--c-roundtable-bg);color:var(--c-roundtable)}
+  .evt.conference{background:var(--c-conference-bg);color:var(--c-conference)}
+  .evt.podcast{background:var(--c-podcast-bg);color:var(--c-podcast)}
+  .evt.experiential{background:var(--c-experiential-bg);color:var(--c-experiential)}
+  .more{font-size:10px;color:var(--text-muted);padding:0 4px;cursor:default}
+
+  /* TBA */
+  .tba-box{margin-top:16px;padding:14px 18px;background:var(--card);border-radius:8px;border:1px solid var(--border)}
+  .tba-box .tba-lbl{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+  .tba-item{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .src-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.04em}
+  .src-badge.gl{background:var(--c-exhibition-bg);color:var(--c-exhibition)}
+  .src-badge.bgv{background:var(--c-webinar-bg);color:var(--c-webinar)}
+
+  /* DETAIL PANEL */
+  .detail-panel{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;animation:slideIn .2s ease}
+  @keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .detail-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px}
+  .detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .detail-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:10px}
+  .detail-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--text-dim);margin-bottom:12px}
+  .detail-meta span{display:flex;align-items:center;gap:5px}
+  .detail-note{font-size:12px;color:var(--text-dim);background:var(--navy-light);padding:8px 12px;border-radius:6px;margin-bottom:12px;border-left:2px solid var(--border)}
+
+  .close-btn{background:var(--navy-light);border:1px solid var(--border);border-radius:6px;padding:5px 10px;cursor:pointer;color:var(--text-dim);font-size:13px;white-space:nowrap;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .close-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* LEGEND */
+  .legend{display:flex;gap:12px;flex-wrap:wrap;padding:0 48px 28px;align-items:center}
+  .legend-lbl{font-size:11px;color:var(--text-muted);margin-right:4px}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-dim)}
+  .legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+  /* FOOTER */
+  .footer{border-top:1px solid var(--border);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer-note{font-size:12px;color:var(--text-muted)}
+  .export-btn{font-size:12px;padding:7px 16px;background:var(--navy-light);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--text-dim);font-family:'DM Sans',sans-serif;transition:all .15s}
+  .export-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  @media(max-width:700px){
+    .header,.controls,.cal-section,.legend,.footer{padding-left:16px;padding-right:16px}
+    .header-title{font-size:26px}
+    .cell{min-height:60px}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-eyebrow">Internal · Confidential</div>
+      <div class="header-title">Events Calendar <em>2026–27</em></div>
+      <div class="header-sub">Consolidated view — GL &amp; BGV product lines</div>
+    </div>
+    <div class="summary-row" id="summary-row"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="source-tabs">
+    <button class="source-tab active" onclick="setSource('all',this)">All</button>
+    <button class="source-tab" onclick="setSource('GL',this)">GL</button>
+    <button class="source-tab" onclick="setSource('BGV',this)">BGV</button>
+  </div>
+  <div class="filters">
+    <span class="filter-lbl">Filter:</span>
+    <span class="fpill exhibition" data-type="exhibition" onclick="toggleFilter(this)">Exhibition</span>
+    <span class="fpill webinar" data-type="webinar" onclick="toggleFilter(this)">Webinar</span>
+    <span class="fpill roundtable" data-type="roundtable" onclick="toggleFilter(this)">Roundtable</span>
+    <span class="fpill conference" data-type="conference" onclick="toggleFilter(this)">Conference</span>
+    <span class="fpill podcast" data-type="podcast" onclick="toggleFilter(this)">Podcast</span>
+    <span class="fpill experiential" data-type="experiential" onclick="toggleFilter(this)">Experiential</span>
+  </div>
+</div>
+
+<div class="cal-section">
+  <div class="cal-nav">
+    <button class="nav-btn" onclick="changeMonth(-1)">&#8592;</button>
+    <h2 id="month-label"></h2>
+    <button class="nav-btn" onclick="changeMonth(1)">&#8594;</button>
+    <button class="nav-btn today-btn" onclick="goToday()">Today</button>
+  </div>
+  <div class="grid-head" id="grid-head"></div>
+  <div class="grid" id="cal-grid"></div>
+  <div id="tba-section"></div>
+  <div id="detail-panel" style="display:none" class="detail-panel"></div>
+</div>
+
+<div class="legend">
+  <span class="legend-lbl">Legend:</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#7B6FE8"></span>Exhibition / Summit</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#34C48A"></span>Webinar</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#F5A623"></span>Roundtable</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#F0614A"></span>Conference</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#4A9EFF"></span>Podcast</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#A8D84A"></span>Experiential</span>
+  <span class="legend-item" style="margin-left:8px"><span class="src-badge gl">GL</span>&nbsp;GL product events</span>
+  <span class="legend-item"><span class="src-badge bgv">BGV</span>&nbsp;BGV activities</span>
+</div>
+
+<div class="footer">
+  <span class="footer-note">Last updated: May 2026 &nbsp;·&nbsp; For internal use only</span>
+
+</div>
+
+<script>
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const today=new Date();
+let viewYear=2026,viewMonth=5;
+let activeFilters=new Set(['exhibition','webinar','roundtable','conference','podcast','experiential']);
+let sourceFilter='all';
+
+const TYPE_LABELS={exhibition:'Exhibition',webinar:'Webinar',roundtable:'Roundtable',conference:'Conference',podcast:'Podcast',experiential:'Experiential'};
+
+const events=[
+  {id:1,name:'India Insurance Summit 2026',date:'2026-03-13',type:'exhibition',source:'GL',spoc:'',location:'Mumbai',domain:'www.indiainsurancesummit.com',sponsorship:250000,goodies:61800,travel:20000,booth:35000,notes:'Exhibitor — 3 passes, 6×6 ft booth, basic branding, full DB access'},
+  {id:2,name:'India Fraud Risk Summit 2026',date:'2026-05-06',type:'exhibition',source:'GL',spoc:'',location:'Mumbai',domain:'www.indiafraudrsiksummit.com',sponsorship:220000,goodies:61800,travel:20000,booth:35000,notes:'Exhibitor — 3 passes, 6×6 ft booth, basic branding, full DB access'},
+  {id:3,name:'Global Fintech Fest 2026',date:'2026-09-09',type:'exhibition',source:'GL',spoc:'',location:'Jio World Centre, Mumbai',domain:'www.globalfintechfest.com',sponsorship:0,goodies:0,travel:0,booth:0,notes:'9–11 September 2026'},
+  {id:26,name:'Global Fintech Fest 2026',date:'2026-09-10',type:'exhibition',source:'GL',spoc:'',location:'Jio World Centre, Mumbai',domain:'www.globalfintechfest.com',sponsorship:0,goodies:0,travel:0,booth:0,notes:'9–11 September 2026'},
+  {id:27,name:'Global Fintech Fest 2026',date:'2026-09-11',type:'exhibition',source:'GL',spoc:'',location:'Jio World Centre, Mumbai',domain:'www.globalfintechfest.com',sponsorship:0,goodies:0,travel:0,booth:0,notes:'9–11 September 2026'},
+  {id:23,name:'Gridlines Webinar — NBFC & Banking Risk',date:'2026-09-25',type:'webinar',source:'GL',spoc:'',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Fintech webinar for NBFC and Banking Risk Officers'},
+  {id:4,name:'IFTA 2026',date:'2026-12-12',type:'exhibition',source:'GL',spoc:'',location:'Aurika, Mumbai',domain:'www.indiafintech.com',sponsorship:200000,goodies:61800,travel:20000,booth:35000,notes:'Exhibitor — 3 passes, 2×2 ft booth, basic branding, full DB access'},
+  {id:5,name:'Bharat Fintech Summit',date:null,type:'exhibition',source:'GL',spoc:'',location:'TBA',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Dates to be announced'},
+  {id:6,name:'BFSI Conference (Presenting)',date:'2026-06-04',type:'conference',source:'BGV',spoc:'Shalini',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Presenting slot'},
+  {id:7,name:'Webinar',date:'2026-07-02',type:'webinar',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'150+ attendees per session'},
+  {id:8,name:'Webinar — AI Impact on HR Processes',date:'2026-07-21',type:'webinar',source:'BGV',spoc:'',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:''},
+  {id:9,name:'Podcast Series',date:'2026-07-15',type:'podcast',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Virtual podcast series'},
+  {id:10,name:'Roundtable — Bangalore',date:'2026-07-15',type:'roundtable',source:'BGV',spoc:'Himani',location:'Bangalore',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Breakfast roundtable'},
+  {id:11,name:'TechHR India (Platinum)',date:'2026-08-06',type:'conference',source:'BGV',spoc:'Shalini',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Platinum sponsorship, 6–7 Aug'},
+  {id:25,name:'TechHR India (Platinum)',date:'2026-08-07',type:'conference',source:'BGV',spoc:'Shalini',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Platinum sponsorship, 6–7 Aug'},
+  {id:12,name:'Roundtable',date:'2026-08-18',type:'roundtable',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Breakfast roundtable'},
+  {id:13,name:'Webinar',date:'2026-09-02',type:'webinar',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'150+ attendees per session'},
+  {id:24,name:'Roundtable (Tentative)',date:'2026-09-15',type:'roundtable',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Date tentative — to be confirmed'},
+  {id:14,name:'Podcast Series',date:'2026-10-15',type:'podcast',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Virtual podcast series'},
+  {id:15,name:'Roundtable',date:'2026-10-14',type:'roundtable',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Breakfast roundtable'},
+  {id:16,name:'Experiential Session',date:'2026-10-20',type:'experiential',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:''},
+  {id:17,name:'Webinar',date:'2026-11-17',type:'webinar',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'150+ attendees per session'},
+  {id:18,name:'Roundtable',date:'2026-11-18',type:'roundtable',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Breakfast roundtable'},
+  {id:19,name:'Podcast Series',date:'2027-01-15',type:'podcast',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Virtual podcast series'},
+  {id:20,name:'Roundtable',date:'2026-12-10',type:'roundtable',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'Breakfast roundtable'},
+  {id:21,name:'Webinar',date:'2027-02-16',type:'webinar',source:'BGV',spoc:'Manish',location:'Virtual',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:'150+ attendees per session'},
+  {id:22,name:'Experiential Session',date:'2027-02-20',type:'experiential',source:'BGV',spoc:'Himani',location:'',domain:'',sponsorship:0,goodies:0,travel:0,booth:0,notes:''}
+];
+
+function filtered(){
+  return events.filter(e=>activeFilters.has(e.type)&&(sourceFilter==='all'||e.source===sourceFilter));
+}
+
+function renderSummary(){
+  const gl=events.filter(e=>e.source==='GL'&&e.date).length;
+  const bgv=events.filter(e=>e.source==='BGV'&&e.date).length;
+  document.getElementById('summary-row').innerHTML=`
+    <div class="s-chip"><div class="lbl">Total activities</div><div class="val">${events.filter(e=>e.date).length}</div></div>
+    <div class="s-chip"><div class="lbl">GL events</div><div class="val">${gl}</div></div>
+    <div class="s-chip"><div class="lbl">BGV activities</div><div class="val">${bgv}</div></div>`;
+}
+
+function renderHead(){
+  document.getElementById('grid-head').innerHTML=DAYS.map(d=>`<span>${d}</span>`).join('');
+}
+
+function renderCalendar(){
+  document.getElementById('month-label').textContent=MONTHS[viewMonth]+' '+viewYear;
+  const grid=document.getElementById('cal-grid');
+  const firstDay=new Date(viewYear,viewMonth,1).getDay();
+  const daysInMonth=new Date(viewYear,viewMonth+1,0).getDate();
+  const daysInPrev=new Date(viewYear,viewMonth,0).getDate();
+  const todayStr=today.toISOString().split('T')[0];
+  const fe=filtered();
+  let html='';
+  for(let i=0;i<42;i++){
+    let day,mo=viewMonth,yr=viewYear,other=false;
+    if(i<firstDay){day=daysInPrev-(firstDay-1-i);mo=viewMonth-1;if(mo<0){mo=11;yr=viewYear-1;}other=true;}
+    else if(i>=firstDay+daysInMonth){day=i-firstDay-daysInMonth+1;mo=viewMonth+1;if(mo>11){mo=0;yr=viewYear+1;}other=true;}
+    else{day=i-firstDay+1;}
+    const dStr=`${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const isToday=dStr===todayStr;
+    const dayEvts=fe.filter(e=>e.date===dStr);
+    const show=dayEvts.slice(0,2);
+    const more=dayEvts.length-2;
+    html+=`<div class="cell${other?' other-month':''}${isToday?' today':''}">
+      <div class="day-num">${day}</div>
+      ${show.map(e=>`<div class="evt ${e.type}" onclick="showDetail(${e.id})" title="${e.name}">${e.name}</div>`).join('')}
+      ${more>0?`<div class="more">+${more} more</div>`:''}
+    </div>`;
+  }
+  grid.innerHTML=html;
+  renderTBA();
+}
+
+function renderTBA(){
+  const tba=filtered().filter(e=>!e.date);
+  const sec=document.getElementById('tba-section');
+  if(!tba.length){sec.innerHTML='';return;}
+  sec.innerHTML=`<div class="tba-box">
+    <div class="tba-lbl">&#9679; Pending date confirmation</div>
+    ${tba.map(e=>`<div class="tba-item"><span class="src-badge ${e.source.toLowerCase()}">${e.source}</span><span style="font-size:13px;color:#E8EEF6;font-weight:500">${e.name}</span>${e.location&&e.location!=='TBA'?`<span style="font-size:12px;color:#7A90A8">${e.location}</span>`:''}</div>`).join('')}
+  </div>`;
+}
+
+function showDetail(id){
+  const e=events.find(x=>x.id===id);if(!e)return;
+  const typeColor={exhibition:'#7B6FE8',webinar:'#34C48A',roundtable:'#F5A623',conference:'#F0614A',podcast:'#4A9EFF',experiential:'#A8D84A'};
+  const typeBg={exhibition:'rgba(123,111,232,0.15)',webinar:'rgba(52,196,138,0.13)',roundtable:'rgba(245,166,35,0.13)',conference:'rgba(240,97,74,0.13)',podcast:'rgba(74,158,255,0.13)',experiential:'rgba(168,216,74,0.13)'};
+  const p=document.getElementById('detail-panel');
+  p.style.display='block';
+  p.innerHTML=`
+    <div class="detail-header">
+      <div class="detail-tags">
+        <span style="font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600;background:${typeBg[e.type]};color:${typeColor[e.type]}">${TYPE_LABELS[e.type]}</span>
+        <span class="src-badge ${e.source.toLowerCase()}">${e.source}</span>
+      </div>
+      <button class="close-btn" onclick="document.getElementById('detail-panel').style.display='none'">&#10005; Close</button>
+    </div>
+    <div class="detail-name">${e.name}</div>
+    <div class="detail-meta">
+      <span>&#128197; ${e.date?new Date(e.date+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Date TBA'}</span>
+      ${e.location?`<span>&#128205; ${e.location}</span>`:''}
+    </div>`;
+}
+
+function toggleFilter(el){
+  const t=el.dataset.type;
+  if(activeFilters.has(t)){activeFilters.delete(t);el.classList.add('inactive');}
+  else{activeFilters.add(t);el.classList.remove('inactive');}
+  renderCalendar();
+}
+
+function setSource(s,btn){
+  sourceFilter=s;
+  document.querySelectorAll('.source-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCalendar();
+}
+
+function changeMonth(d){
+  viewMonth+=d;
+  if(viewMonth>11){viewMonth=0;viewYear++;}
+  if(viewMonth<0){viewMonth=11;viewYear--;}
+  renderCalendar();
+}
+
+function goToday(){
+  viewYear=today.getFullYear();viewMonth=today.getMonth();renderCalendar();
+}
+
+
+
+renderHead();renderCalendar();renderSummary();
+</script>
+</body>
+</html>
